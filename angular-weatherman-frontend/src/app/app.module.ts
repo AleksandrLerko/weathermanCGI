@@ -10,7 +10,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 
-//registerLocaleData(localeRu, 'ru');
 
 @NgModule({
   declarations: [
