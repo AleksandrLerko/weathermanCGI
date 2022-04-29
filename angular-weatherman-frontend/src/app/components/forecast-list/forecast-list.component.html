@@ -1,0 +1,147 @@
+<form [formGroup]="form" (ngSubmit)="getData($event)">
+  <div class="form-group">
+    <table class="centeredTable">
+      <thead>
+        <tr>
+          <th>Location</th>
+          <th>Data range</th>
+        </tr>
+      </thead>
+      <tbody>
+        <td class="col-10"><input class="form-control customInput" type="name" id="location" placeholder="Enter a location"
+            formControlName="location" [ngClass]="{'form-submitted': formSubmitted}"></td>
+        <td class="col-1">
+          <select class="form-select" formControlName="days">
+            <option *ngFor="let days of dayRange" [ngValue]="days">{{days}}</option>
+          </select>
+        </td>
+        <td><button type="submit" class="btn btn-primary">Confirm</button></td>
+      </tbody>
+    </table>
+  </div>
+</form>
+<div class="my-5" *ngIf="forecastApi1 && forecastApi2">
+  <google-map [zoom]="11" width="100%" [center]="center" (mapClick)="click($event)">
+    <map-marker *ngFor="let marker of markers" [position]="marker.position" [label]="marker.label"
+      [title]="marker.title" [options]="marker.options">
+
+    </map-marker>
+  </google-map>
+  <div class="body">
+    <h4>Location: {{forecastApi1.location.cityName}} at {{forecastApi1.location.localTime}}</h4>
+    <table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th>Info</th>
+          <th>WeatherApi</th>
+          <th>VisualcrossingApi</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="forecastApi1 !== undefined">
+        <tr>
+          <td>Temperature</td>
+          <td>{{forecastApi1.currentForecast.currentTemperatureCelsius}}℃</td>
+          <td>{{forecastApi2.currentForecast.currentTemperatureCelsius}}℃</td>
+        </tr>
+        <tr>
+          <td>Wind speed</td>
+          <td>{{forecastApi1.currentForecast.windKph}} kph</td>
+          <td>{{forecastApi2.currentForecast.windKph}} kph</td>
+        </tr>
+        <tr>
+          <td>Precipitation</td>
+          <td>{{forecastApi1.currentForecast.precipitation}} mm - {{forecastApi1.currentForecast.conditions}}</td>
+          <td>{{forecastApi2.currentForecast.precipitation}} mm - {{forecastApi1.currentForecast.conditions}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <h4>Forecast for {{days}} days</h4>
+      <div>
+        <div class="space">
+          <h5>Today hourly info by WeatherApi</h5>
+          <button class="btn btn-success showButton" (click)="hideHourlyApi1Block = !hideHourlyApi1Block">Show</button>
+        </div>
+        <table class="table table-bordered table-striped" *ngIf="hideHourlyApi1Block">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Temperature</th>
+              <th>Wind speed</th>
+              <th>Precipitation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of forecastApi1.dailyForecast[0].hourlyForecastList">
+              <td>{{item.dateTime}}</td>
+              <td>{{item.hourTemperatureCelsius}}℃</td>
+              <td>{{item.windKph}} kph</td>
+              <td>{{item.precipitation}} mm - {{item.conditions}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="space">
+          <h5>Today hourly info by VisualcrossingApi</h5>
+          <button class="btn btn-success showButton" (click)="hideHourlyApi2Block = !hideHourlyApi2Block">Show</button>
+        </div>
+        <table class="table table-bordered table-striped" *ngIf="hideHourlyApi2Block">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Temperature</th>
+              <th>Wind speed</th>
+              <th>Precipitation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of forecastApi2.dailyForecast[0].hourlyForecastList">
+              <td>{{item.dateTime}}</td>
+              <td>{{item.hourTemperatureCelsius}}℃</td>
+              <td>{{item.windKph}} kph</td>
+              <td>{{item.precipitation}} mm - {{item.conditions}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h5 class="space">Daily info by WeatherApi</h5>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Days</th>
+            <th>Min and max temperature</th>
+            <th>Max wind speed</th>
+            <th>Precipitation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of forecastApi1.dailyForecast">
+            <td>{{item.dateTime}}</td>
+            <td>from {{item.minimumTemperatureCelsius}}℃ to {{item.maximumTemperatureCelsius}}℃</td>
+            <td>{{item.maxWindKph}} kph</td>
+            <td>{{item.precipitation}} mm - {{item.conditions}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <h5 class="space">Daily info by VisualcrossingApi</h5>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Days</th>
+            <th>Min and max temperature</th>
+            <th>Max wind speed</th>
+            <th>Precipitation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of forecastApi2.dailyForecast">
+            <td>{{item.dateTime}}</td>
+            <td>from {{item.minimumTemperatureCelsius}}℃ to {{item.maximumTemperatureCelsius}}℃</td>
+            <td>{{item.maxWindKph}} kph</td>
+            <td>{{item.precipitation}} mm - {{item.conditions}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

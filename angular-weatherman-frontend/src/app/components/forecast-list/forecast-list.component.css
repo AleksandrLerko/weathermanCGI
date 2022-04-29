@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,300&display=swap');
+
+.showButton {
+    margin-left: .5rem ;
+}
+
+.ng-valid.ng-dirty:not(form) {
+    border: solid 2px lightgreen;
+  }
+  
+.ng-invalid.ng-dirty:not(form), .ng-invalid:not(form).form-submitted {
+    border: solid 2px lightcoral;
+}
+
+h5 {
+    display: inline-block;
+    margin: 0;
+}
+
+
+.space{
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+.full{
+    height: 200px;
+    width: 100%;
+}
+
+.customInput{
+    border-radius: 30px;
+    font-family: 'Open Sans', sans-serif;
+    padding: 0.3em;
+}
